@@ -23,6 +23,7 @@ public:
 
 private:
 	glm::ivec2 tileMapDispl, posPlayer;
+	float FrameCount;
 	Texture spritesheet;
 	Sprite* sprite;
 	TileMap* map;

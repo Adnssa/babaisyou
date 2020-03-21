@@ -4,6 +4,7 @@
 
 #include <glm/glm.hpp>
 #include "Texture.h"
+#include <vector>
 #include "ShaderProgram.h"
 
 
@@ -41,6 +42,8 @@ private:
 	void prepareArrays(const glm::vec2& minCoords, ShaderProgram& program);
 
 private:
+	void Move_block(int pos_ini, int pos_dest);
+
 	GLuint vao;
 	GLuint vbo;
 	GLint posLocation, texCoordLocation;
@@ -49,7 +52,11 @@ private:
 	Texture tilesheet;
 	glm::vec2 tileTexSize;
 	glm::vec2 sheetCoords[10];
+	glm::vec2 MinCoords;
 	int* map;
+	vector<float> vertices;
+	ShaderProgram p;
+	int nTiles;
 
 };
 

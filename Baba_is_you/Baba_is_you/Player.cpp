@@ -15,8 +15,9 @@ void Player::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
 {
 
 	spritesheet.loadFromFile("images/Baba_sheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
-	sprite = Sprite::createSprite(glm::ivec2(32, 32), glm::vec2(1 / 32.f, 1 / 66.f), &spritesheet, &shaderProgram);
+	sprite = Sprite::createSprite(glm::ivec2(24, 24), glm::vec2(1 / 32.f, 1 / 66.f), &spritesheet, &shaderProgram);
 	sprite->setNumberAnimations(8);
+	FrameCount = 0;
 
 	sprite->setAnimationSpeed(STAND_LEFT, 4);
 	sprite->addKeyframe(STAND_LEFT, glm::vec2(10 / 32.f, 0.f));
@@ -80,10 +81,15 @@ void Player::update(int deltaTime)
 	{
 		if (sprite->animation() != MOVE_LEFT)
 			sprite->changeAnimation(MOVE_LEFT);
-		posPlayer.x -= 2;
-		if (map->collisionMoveLeft(posPlayer, glm::ivec2(32, 32)))
+		if (FrameCount == 0) {
+			posPlayer.x -= 16;
+			FrameCount++;
+		}
+		else if (FrameCount == 10) FrameCount = 0;
+		else FrameCount++;
+		if (map->collisionMoveLeft(posPlayer, glm::ivec2(24, 24)))
 		{
-			posPlayer.x += 2;
+			posPlayer.x += 16;
 			sprite->changeAnimation(STAND_LEFT);
 		}
 	}
@@ -91,10 +97,15 @@ void Player::update(int deltaTime)
 	{
 		if (sprite->animation() != MOVE_RIGHT)
 			sprite->changeAnimation(MOVE_RIGHT);
-		posPlayer.x += 2;
-		if (map->collisionMoveRight(posPlayer, glm::ivec2(32, 32)))
+		if (FrameCount == 0) {
+			posPlayer.x += 16;
+			FrameCount++;
+		}
+		else if (FrameCount == 10) FrameCount = 0;
+		else FrameCount++;
+		if (map->collisionMoveRight(posPlayer, glm::ivec2(24, 24)))
 		{
-			posPlayer.x -= 2;
+			posPlayer.x -= 16;
 			sprite->changeAnimation(STAND_RIGHT);
 		}
 	}
@@ -102,10 +113,15 @@ void Player::update(int deltaTime)
 	{
 		if (sprite->animation() != MOVE_UP)
 			sprite->changeAnimation(MOVE_UP);
-		posPlayer.y -= 2;
-		if (map->collisionMoveUp(posPlayer, glm::ivec2(32, 32), &posPlayer.y))
+		if (FrameCount == 0) {
+			posPlayer.y -= 16;
+			FrameCount++;
+		}
+		else if (FrameCount == 10) FrameCount = 0;
+		else FrameCount++;
+		if (map->collisionMoveUp(posPlayer, glm::ivec2(24, 24), &posPlayer.y))
 		{
-			posPlayer.y += 2;
+			posPlayer.y += 16;
 			sprite->changeAnimation(STAND_UP);
 		}
 	}
@@ -113,15 +129,21 @@ void Player::update(int deltaTime)
 	{
 		if (sprite->animation() != MOVE_DOWN)
 			sprite->changeAnimation(MOVE_DOWN);
-		posPlayer.y += 2;
-		if (map->collisionMoveDown(posPlayer, glm::ivec2(32, 32), &posPlayer.y))
+		if (FrameCount == 0) {
+			posPlayer.y += 16;
+			FrameCount++;
+		}
+		else if (FrameCount == 10) FrameCount = 0;
+		else FrameCount++;
+		if (map->collisionMoveDown(posPlayer, glm::ivec2(24, 24), &posPlayer.y))
 		{
-			posPlayer.y -= 2;
+			posPlayer.y -= 16;
 			sprite->changeAnimation(STAND_DOWN);
 		}
 	}
 	else
 	{
+		FrameCount = 0;
 		if (sprite->animation() == MOVE_LEFT)
 			sprite->changeAnimation(STAND_LEFT);
 		else if (sprite->animation() == MOVE_RIGHT)
